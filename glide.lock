@@ -395,3 +395,9 @@ testImports:
   - difflib
 - name: github.com/stretchr/objx
   version: 8a3f7159479fbc75b30357fbc48f380b7320f08e
+- name: github.com/posener/complete
+  version: 98eb9847f27ba2008d380a32c98be474dea55bdf
+  subpackages:
+  - cmd
+  - cmd/install
+  - match

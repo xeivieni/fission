@@ -62,3 +62,5 @@ import:
   version: ~0.3.2
 - package: github.com/hashicorp/go-multierror
 - package: github.com/hashicorp/errwrap
+- package: github.com/posener/complete
+  version: 1.1.1
