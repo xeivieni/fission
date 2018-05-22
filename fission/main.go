@@ -62,6 +62,10 @@ func getFissionAPIVersion(apiUrl string) (string, error) {
 }
 
 func getServerUrl() string {
+	return getApplicationUrl("application=fission-api")
+}
+
+func getApplicationUrl(selector string) string {
 	var serverUrl string
 	// Use FISSION_URL env variable if set; otherwise, port-forward to controller.
 	fissionUrl := os.Getenv("FISSION_URL")
@@ -69,7 +73,7 @@ func getServerUrl() string {
 		fissionNamespace := getFissionNamespace()
 		kubeConfig := getKubeConfigPath()
 		localPort := setupPortForward(
-			kubeConfig, fissionNamespace, "application=fission-api")
+			kubeConfig, fissionNamespace, selector)
 		serverUrl = "http://127.0.0.1:" + localPort
 	} else {
 		serverUrl = fissionUrl
