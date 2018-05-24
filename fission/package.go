@@ -152,7 +152,21 @@ func updatePackage(client *client.Client, pkg *crd.Package, envName, envNamespac
 	if len(envName) > 0 {
 		pkg.Spec.Environment.Name = envName
 		pkg.Spec.Environment.Namespace = envNamespace
-		needToBuild = true
+
+		// we need to fetch the env to find out if it has a builder image, only then set needToBuild to true
+		env, err := client.EnvironmentGet(&metav1.ObjectMeta{
+			Namespace: envName,
+			Name:      envNamespace,
+		})
+		if err == nil && env.Spec.Builder.Image != "" {
+			needToBuild = true
+		}
+		if err != nil {
+			// we dont want to return here, the worst thing that can happen is build wont get triggered.
+			// that can be fixed manually by updating the package.
+			fmt.Printf("Error fetching env : %s.%s, err: %v to check if package needs to be re-built",
+				envName, envNamespace, err)
+		}
 	}
 
 	if len(buildcmd) > 0 {
