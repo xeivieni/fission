@@ -149,13 +149,15 @@ func msgHandler(nats *Nats, trigger *crd.MessageQueueTrigger) func(*ns.Msg) {
 			}
 		}
 
-		// Where should the following line go?
-		defer resp.Body.Close()
-
 		if resp == nil {
 			log.Warning("The response was undefined. Quit.")
 			return
 		}
+
+		log.Printf("Response body received : %v", resp.Body)
+
+		// Where should the following line go?
+		defer resp.Body.Close()
 
 		body, bodyErr := ioutil.ReadAll(resp.Body)
 		if bodyErr != nil {
